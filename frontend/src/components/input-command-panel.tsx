@@ -66,16 +66,13 @@ export function InputCommandPanel({
   placeholder = "Ask about cognitive signature analysis…",
 }: InputCommandPanelProps) {
   const [text, setText] = useState("");
-  const [transcriptPreview, setTranscriptPreview] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleTranscriptReady = useCallback(
     ({ transcript, pauseMap, wordTimestamps, duration }: {
       transcript: string; pauseMap?: number[]; wordTimestamps?: WordTimestamp[]; duration?: number;
     }) => {
-      const words = Array.isArray(wordTimestamps) ? wordTimestamps.map((w) => w.word).join(" ") : transcript;
-      setTranscriptPreview(words || transcript);
-      setText(transcript);
+      setText("");
       onSubmit?.({ type: "transcript", content: transcript, pauseMap, wordTimestamps, duration });
     },
     [onSubmit],
@@ -87,10 +84,10 @@ export function InputCommandPanel({
     toggle,
   } = useVoiceRecorder(handleTranscriptReady);
 
-  // When recording stops and Whisper transcript arrives, clear live transcript
+  // Hook already clears live transcript after recording stops.
   useEffect(() => {
     if (!isRecording && !isTranscribing) {
-      // transcriptPreview takes over — live transcript already cleared by hook
+      // no-op: keep for future side effects
     }
   }, [isRecording, isTranscribing]);
 
@@ -239,25 +236,6 @@ export function InputCommandPanel({
           >
             Transcribing with Whisper — analysing shortly…
           </span>
-        </div>
-      )}
-
-      {/* Whisper transcript preview (after recording) */}
-      {transcriptPreview && !isRecording && !isTranscribing && (
-        <div className="rounded-xl px-4 py-3" style={{ ...GLASS, border: "1px solid rgba(29,158,117,0.25)" }}>
-          <div
-            className="text-[9px] font-semibold uppercase tracking-widest mb-2 flex items-center gap-1.5"
-            style={{ color: "#1D9E75", fontFamily: "var(--font-jetbrains-mono)" }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-            Transcript
-          </div>
-          <div
-            className="text-[14px] leading-relaxed break-words"
-            style={{ color: "var(--nt-text-hi)", fontFamily: "var(--font-dm-sans)" }}
-          >
-            {transcriptPreview}
-          </div>
         </div>
       )}
 
