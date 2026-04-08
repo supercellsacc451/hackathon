@@ -4,7 +4,6 @@ import { useState } from "react";
 import { IconClockHour4, IconTrash, IconChevronRight, IconMicrophone, IconTextSize, IconBrain, IconX } from "@tabler/icons-react";
 import type { HistoryEntry } from "@/hooks/useSessionHistory";
 import type { CognitiveReport } from "@/components/cognition-report-panel";
-import type { RegionActivation } from "@/components/neural-cortex-viewer";
 
 type SessionHistoryPanelProps = { entries: HistoryEntry[]; onRestore: (entry: HistoryEntry) => void; onRemove: (id: string) => void; onClearAll: () => void };
 

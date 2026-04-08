@@ -7,14 +7,14 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 
 // ─── Types & constants ────────────────────────────────────────────────
 
-export type RegionActivation = {
+export type SignalRegionActivation = {
   region: string;
   mni: [number, number, number];
   activation: number; // 0–1, driven by agent overall score
   agent: string;
 };
 
-export const DEFAULT_REGIONS: RegionActivation[] = [
+export const DEFAULT_REGIONS: SignalRegionActivation[] = [
   { region: "Broca's area", mni: [-44, 20, 8], activation: 0.72, agent: "Lexical" },
   { region: "Wernicke's area", mni: [-54, -40, 14], activation: 0.58, agent: "Semantic" },
   { region: "DLPFC", mni: [-46, 20, 32], activation: 0.83, agent: "Syntax" },
@@ -22,9 +22,9 @@ export const DEFAULT_REGIONS: RegionActivation[] = [
   { region: "Amygdala", mni: [-24, -4, -22], activation: 0.31, agent: "Affective" },
 ];
 
-type BrainViewerProps = {
-  activations?: RegionActivation[];
-  onRegionClick?: (r: RegionActivation) => void;
+type SignalFieldViewerProps = {
+  activations?: SignalRegionActivation[];
+  onRegionClick?: (r: SignalRegionActivation) => void;
   activeAgentName?: string;
   showLabels?: boolean;
 };
@@ -181,7 +181,7 @@ function HoverTooltip({
   x,
   y,
 }: {
-  region: RegionActivation;
+  region: SignalRegionActivation;
   x: number;
   y: number;
 }) {
@@ -288,7 +288,7 @@ function RegionInfoPanel({
   region,
   onClose,
 }: {
-  region: RegionActivation;
+  region: SignalRegionActivation;
   onClose: () => void;
 }) {
   const color = activationColor(region.activation);
@@ -349,7 +349,7 @@ function RegionInfoPanel({
   );
 }
 
-// ─── Main component (imperative Three.js — NeuraLens approach) ────────
+// ─── Main component (imperative Three.js renderer) ────────
 
 // Label color per region (matches the biomarker palette)
 const REGION_LABEL_COLORS: Record<string, string> = {
@@ -360,12 +360,12 @@ const REGION_LABEL_COLORS: Record<string, string> = {
   "Amygdala":        "#a855f7",
 };
 
-export default function BrainViewer({
+export default function SignalFieldViewer({
   activations = DEFAULT_REGIONS,
   onRegionClick,
   activeAgentName: _activeAgentName,
   showLabels = false,
-}: BrainViewerProps) {
+}: SignalFieldViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const labelElsRef = useRef<Map<string, HTMLDivElement>>(new Map());
   const showLabelsRef = useRef(showLabels);
@@ -393,7 +393,7 @@ export default function BrainViewer({
     connectionParticles: ConnectionParticle[];
   } | null>(null);
 
-  const [selectedRegion, setSelectedRegion] = useState<RegionActivation | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<SignalRegionActivation | null>(null);
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const hoveredRegionRef = useRef<string | null>(null);
@@ -483,7 +483,7 @@ export default function BrainViewer({
       (err) => console.warn("Failed to load cortexflow_surface_mesh.obj:", err),
     );
 
-    // ── Load region activation meshes (like NeuraLens tumor meshes) ──
+    // ── Load region activation meshes ──
 
     for (const region of activationsRef.current) {
       const config = REGION_MESH_CONFIG[region.region];

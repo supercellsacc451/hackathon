@@ -12,7 +12,7 @@ const FACES = [
 
 const CYCLE_MS = 600;
 
-export function StartupSplash({
+export function LaunchSequence({
   minDisplayMs = 4400,
   readyToFade,
   onFadeComplete,

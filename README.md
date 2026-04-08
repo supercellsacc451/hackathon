@@ -1,10 +1,10 @@
 # Hackathon Project
 
-Frontend-first AI analysis workspace inspired by NeuroTrace, rebuilt for your own stack with Groq-based APIs.
+Frontend-first AI analysis workspace for CortexFlow, rebuilt for your own stack with Groq-based APIs.
 
 ## Current Scope
 
-- Frontend imported and adapted from NeuroTrace-style architecture
+- Frontend architecture fully refactored and customized for CortexFlow
 - Brand + theme refreshed for a cleaner premium look
 - Local transcription route migrated to Groq OpenAI-compatible endpoint
 - Backend implemented with deterministic metric extraction + Groq narrative/safety layers

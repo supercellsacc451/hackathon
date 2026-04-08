@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { StartupSplash } from "@/components/startup-splash";
+import { LaunchSequence } from "@/components/launch-sequence";
 import { WorkspaceSidebar } from "@/components/workspace-sidebar";
 import { WorkspaceTopbar } from "@/components/workspace-topbar";
 import { type SignalAgentCardProps } from "@/components/signal-agent-card";
@@ -12,14 +12,14 @@ import { CognitionReportPanel, type CognitiveReport } from "@/components/cogniti
 import { SessionHistoryPanel } from "@/components/session-history-panel";
 import { MissionControlView } from "@/components/mission-control-view";
 import PrismSurface from "@/components/prism-surface";
-import type { RegionActivation } from "@/components/neural-cortex-viewer";
+import type { SignalRegionActivation } from "@/components/signal-field-viewer";
 import { useSessionHistory } from "@/hooks/useSessionHistory";
 import { useColorMode } from "@/hooks/useColorMode";
 import { ProfileRadarChart } from "@/components/profile-radar-chart";
 
 // ─── Brain region definitions ─────────────────────────────────────────────────
 
-const BRAIN_REGIONS: RegionActivation[] = [
+const CORTEX_REGIONS: SignalRegionActivation[] = [
   { region: "Broca's area",    mni: [-44, 20, 8],    activation: 0.72, agent: "Lexical"   },
   { region: "Wernicke's area", mni: [-54, -40, 14],  activation: 0.58, agent: "Semantic"  },
   { region: "DLPFC",           mni: [-46, 20, 32],   activation: 0.83, agent: "Syntax"    },
@@ -84,7 +84,7 @@ function scoreColor(v: number) {
 
 // ─── Dynamic imports ──────────────────────────────────────────────────────────
 
-const BrainViewer = dynamic(() => import("@/components/neural-cortex-viewer"), { ssr: false });
+const SignalFieldViewer = dynamic(() => import("@/components/signal-field-viewer"), { ssr: false });
 const FluidNoiseBg = dynamic(() => import("@/components/fluid-noise-bg"), { ssr: false });
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -345,7 +345,7 @@ const REGION_MESH_CONFIG_COLORS: Record<string, string> = {
   "Amygdala":        "#ef4444",
 };
 
-const DEFAULT_REGIONS: RegionActivation[] = [
+const DEFAULT_REGIONS: SignalRegionActivation[] = [
   { region: "Broca's area",    mni: [-44, 20, 8],    activation: 0.72, agent: "Lexical" },
   { region: "Wernicke's area", mni: [-54, -40, 14],  activation: 0.58, agent: "Semantic" },
   { region: "DLPFC",           mni: [-46, 20, 32],   activation: 0.83, agent: "Syntax" },
@@ -353,7 +353,7 @@ const DEFAULT_REGIONS: RegionActivation[] = [
   { region: "Amygdala",        mni: [-24, -4, -22],  activation: 0.31, agent: "Affective" },
 ];
 
-function BrainRegionsPanel() {
+function CortexRegionsPanel() {
   const regions = [
     {
       id: "broca",
@@ -430,7 +430,7 @@ function BrainRegionsPanel() {
     boxShadow: "var(--nt-glass-shadow)",
   };
 
-  const [hoveredAtlasRegion, setHoveredAtlasRegion] = useState<RegionActivation | null>(null);
+  const [hoveredAtlasRegion, setHoveredAtlasRegion] = useState<SignalRegionActivation | null>(null);
 
   return (
     <div className="h-full overflow-y-auto" style={{ padding: "16px 18px 24px" }}>
@@ -470,7 +470,7 @@ function BrainRegionsPanel() {
         className="rounded-xl mb-3 overflow-hidden relative"
         style={{ ...GLASS, height: 280 }}
       >
-        <BrainViewer
+        <SignalFieldViewer
           activations={DEFAULT_REGIONS}
           onRegionClick={(r) => setHoveredAtlasRegion(r)}
           showLabels
@@ -891,7 +891,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [agentSteps, setAgentSteps] = useState<AgentStep[]>([]);
-  const [activations, setActivations] = useState<RegionActivation[]>(BRAIN_REGIONS);
+  const [activations, setActivations] = useState<SignalRegionActivation[]>(CORTEX_REGIONS);
   const [biomarkerScores, setBiomarkerScores] = useState<Record<string, number> | undefined>();
   const [wordTimestamps, setWordTimestamps] = useState<WordTimestamp[] | undefined>();
   const [audioDuration, setAudioDuration] = useState<number | undefined>();
@@ -939,7 +939,7 @@ export default function DashboardPage() {
     setIsLoading(true);
     setBiomarkerScores(undefined);
     setCognitiveReport(undefined);
-    setActivations(BRAIN_REGIONS);
+    setActivations(CORTEX_REGIONS);
 
     // Capture word timestamps from voice recording
     if (input.type === "transcript") {
@@ -1005,7 +1005,7 @@ export default function DashboardPage() {
                 scores[key] = typeof val === "number" ? val : val.overall;
               }
               setBiomarkerScores(scores);
-              setActivations(BRAIN_REGIONS.map((r) => ({ ...r, activation: scores[AGENT_KEY[r.agent]] ?? r.activation })));
+              setActivations(CORTEX_REGIONS.map((r) => ({ ...r, activation: scores[AGENT_KEY[r.agent]] ?? r.activation })));
               // Save to history when we have both scores and report
               if (ev.report) {
                 addEntry({
@@ -1049,7 +1049,7 @@ export default function DashboardPage() {
     setCognitiveReport(entry.report);
     setWordTimestamps(entry.wordTimestamps);
     setAudioDuration(entry.audioDuration);
-    setActivations(BRAIN_REGIONS.map((r) => ({ ...r, activation: entry.scores[AGENT_KEY[r.agent]] ?? r.activation })));
+    setActivations(CORTEX_REGIONS.map((r) => ({ ...r, activation: entry.scores[AGENT_KEY[r.agent]] ?? r.activation })));
     setAgentSteps([]);
     setActivePage("analysis");
   }, []);
@@ -1064,7 +1064,7 @@ export default function DashboardPage() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      <StartupSplash />
+      <LaunchSequence />
 
       {/* Smooth animated background inspired by the original style */}
       <div className="fixed inset-0 z-0 h-screen w-screen">
@@ -1113,7 +1113,7 @@ export default function DashboardPage() {
                 setAgentSteps([]);
                 setBiomarkerScores(undefined);
                 setCognitiveReport(undefined);
-                setActivations(BRAIN_REGIONS);
+                setActivations(CORTEX_REGIONS);
                 setWordTimestamps(undefined);
                 setAudioDuration(undefined);
               }}
@@ -1180,7 +1180,7 @@ export default function DashboardPage() {
               }}
               aria-hidden={activePage !== "brain regions"}
             >
-              <BrainRegionsPanel />
+              <CortexRegionsPanel />
             </div>
 
             {/* ══════ BIOMARKERS VIEW ══════ */}
@@ -1280,7 +1280,7 @@ export default function DashboardPage() {
                 {biomarkerScores && (
                   <div className="absolute bottom-3 left-3 z-10 flex flex-col gap-1 p-2 rounded-xl pointer-events-none"
                     style={{ background: "var(--nt-glass)", backdropFilter: "blur(8px)", border: "1px solid var(--nt-glass-border)" }}>
-                    {BRAIN_REGIONS.map((r) => {
+                    {CORTEX_REGIONS.map((r) => {
                       const score = biomarkerScores[AGENT_KEY[r.agent]] ?? 0;
                       const color = scoreColor(score * 100);
                       return (
@@ -1302,7 +1302,7 @@ export default function DashboardPage() {
                   Drag · Scroll to zoom
                 </div>
 
-                <BrainViewer activations={activations} onRegionClick={(r) => console.log("Region clicked:", r)} activeAgentName={activeAgentName} />
+                <SignalFieldViewer activations={activations} onRegionClick={(r) => console.log("Region clicked:", r)} activeAgentName={activeAgentName} />
               </div>
 
               {/* ── RIGHT: Report (40%) — always visible ── */}

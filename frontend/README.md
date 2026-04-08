@@ -1,6 +1,6 @@
 # Frontend (Next.js)
 
-Frontend for the hackathon app. This project is inspired by NeuroTrace UI patterns and updated to use Groq-first transcription in the local API route.
+Frontend for the hackathon app. The interface is custom-built for CortexFlow and uses Groq-first transcription in the local API route.
 
 ## Stack
 
