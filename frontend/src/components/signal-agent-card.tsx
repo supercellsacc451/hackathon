@@ -1,10 +1,10 @@
 "use client";
 
-import { REGIONS } from "./brain-atlas";
+import { REGIONS } from "./cortex-atlas";
 
 type Marker = { name: string; value: number; unit?: string };
 
-export type AgentCardProps = {
+export type SignalAgentCardProps = {
   agentName: string;
   primerSet: string;
   brainRegion: string;
@@ -29,12 +29,12 @@ function scoreColor(score: number): string {
   return "#7e8fa6";
 }
 
-export const MOCK_AGENTS: AgentCardProps[] = REGIONS.map((region) => {
+export const MOCK_AGENTS: SignalAgentCardProps[] = REGIONS.map((region) => {
   const details = AGENT_DETAILS[region.agent];
   return { agentName: `${region.agent} Agent`, primerSet: details.primerSet, brainRegion: region.label, markers: details.markers, topScore: details.topScore };
 });
 
-export function AgentCard({ agentName, primerSet, brainRegion, markers, topScore = 0, isActive = false, isLoading = false }: AgentCardProps) {
+export function AgentCard({ agentName, primerSet, brainRegion, markers, topScore = 0, isActive = false, isLoading = false }: SignalAgentCardProps) {
   if (isLoading) {
     return (
       <div className="p-4 h-full flex flex-col gap-3">

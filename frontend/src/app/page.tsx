@@ -2,20 +2,21 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { NeuroTraceSplash } from "@/components/neurotrace-splash";
-import { NeuroSidebar } from "@/components/neuro-sidebar";
-import { SiteHeader } from "@/components/site-header";
-import { type AgentCardProps } from "@/components/agent-card";
-import { AnalysisPanel, type AnalysisInput, type WordTimestamp } from "@/components/analysis-panel";
-import { WaveformPanel } from "@/components/waveform-panel";
-import { ReportPanel, type CognitiveReport } from "@/components/report-panel";
-import { HistoryPanel } from "@/components/history-panel";
-import { DashboardView } from "@/components/dashboard-view";
-import GlassSurface from "@/components/GlassSurface";
-import type { RegionActivation } from "@/components/brain-viewer";
-import { useAnalysisHistory } from "@/hooks/useAnalysisHistory";
-import { useTheme } from "@/hooks/useTheme";
-import { NeuroRadarChart } from "@/components/radar-chart";
+import { StartupSplash } from "@/components/startup-splash";
+import { WorkspaceSidebar } from "@/components/workspace-sidebar";
+import { WorkspaceTopbar } from "@/components/workspace-topbar";
+import { type SignalAgentCardProps } from "@/components/signal-agent-card";
+import { InputCommandPanel, type AnalysisInput, type WordTimestamp } from "@/components/input-command-panel";
+import { SpeechWavePanel } from "@/components/speech-wave-panel";
+import { CognitionReportPanel, type CognitiveReport } from "@/components/cognition-report-panel";
+import { SessionHistoryPanel } from "@/components/session-history-panel";
+import { MissionControlView } from "@/components/mission-control-view";
+import PrismSurface from "@/components/prism-surface";
+import type { RegionActivation } from "@/components/neural-cortex-viewer";
+import { useSessionHistory } from "@/hooks/useSessionHistory";
+import { useColorMode } from "@/hooks/useColorMode";
+import { ProfileRadarChart } from "@/components/profile-radar-chart";
+import { SignalGlitchBg } from "@/components/signal-glitch-bg";
 
 // ─── Brain region definitions ─────────────────────────────────────────────────
 
@@ -84,8 +85,7 @@ function scoreColor(v: number) {
 
 // ─── Dynamic imports ──────────────────────────────────────────────────────────
 
-const Dither = dynamic(() => import("@/components/Dither"), { ssr: false });
-const BrainViewer = dynamic(() => import("@/components/brain-viewer"), { ssr: false });
+const BrainViewer = dynamic(() => import("@/components/neural-cortex-viewer"), { ssr: false });
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -688,7 +688,7 @@ function BrainRegionsPanel() {
   );
 }
 
-function MiniAgentCard({ agent, isActive }: { agent: AgentCardProps; isActive: boolean }) {
+function MiniAgentCard({ agent, isActive }: { agent: SignalAgentCardProps; isActive: boolean }) {
   const score = agent.topScore ?? 0;
   const color = scoreColor(score);
 
@@ -884,9 +884,9 @@ function ProcessingSteps({ steps, glass }: { steps: AgentStep[]; glass: React.CS
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function DashboardPage() {
-  const { isDark, toggle: toggleTheme } = useTheme();
+  const { isDark, toggle: toggleTheme } = useColorMode();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const { entries: historyEntries, addEntry, removeEntry, clearAll } = useAnalysisHistory();
+  const { entries: historyEntries, addEntry, removeEntry, clearAll } = useSessionHistory();
   const [hasStarted, setHasStarted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -1038,7 +1038,7 @@ export default function DashboardPage() {
   }, [sessionId, addEntry]);
 
   // ── Restore a history entry ──────────────────────────────────────────────────
-  const handleRestore = useCallback((entry: import("@/hooks/useAnalysisHistory").HistoryEntry) => {
+  const handleRestore = useCallback((entry: import("@/hooks/useSessionHistory").HistoryEntry) => {
     setHasStarted(true);
     setBiomarkerScores(entry.scores);
     setCognitiveReport(entry.report);
@@ -1059,17 +1059,22 @@ export default function DashboardPage() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      <NeuroTraceSplash />
+      <StartupSplash />
 
-      {/* Dither background */}
+      {/* Custom animated glitch background */}
       <div className="fixed inset-0 z-0 h-screen w-screen">
-        <Dither
-          waveSpeed={0.025} waveFrequency={3} waveAmplitude={0.35}
-          backgroundColor={isDark ? [0.04, 0.05, 0.09] : [1, 1, 1]}
-          waveColor={isDark ? [0.78, 0.85, 0.98] : [0, 0, 0]}
-          colorNum={5} pixelSize={2} enableMouseInteraction mouseRadius={1.2}
-        />
+        <SignalGlitchBg isDark={isDark} />
       </div>
+
+      {/* Readability layer over animated background */}
+      <div
+        className="fixed inset-0 z-[5] pointer-events-none"
+        style={{
+          background: isDark
+            ? "linear-gradient(180deg, rgba(2,11,18,0.68) 0%, rgba(2,11,18,0.5) 46%, rgba(2,11,18,0.78) 100%)"
+            : "linear-gradient(180deg, rgba(244,249,252,0.76) 0%, rgba(244,249,252,0.52) 46%, rgba(244,249,252,0.82) 100%)",
+        }}
+      />
 
       {/* App shell */}
       <div className="relative z-10 flex h-screen w-full">
@@ -1081,7 +1086,7 @@ export default function DashboardPage() {
             transition: "width 280ms cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
-          <GlassSurface
+          <PrismSurface
             width={240}
             height={"100%" as unknown as number}
             borderRadius={0}
@@ -1092,7 +1097,7 @@ export default function DashboardPage() {
             style={{ borderRight: "1px solid var(--nt-divider)" } as React.CSSProperties}
             contentClassName="!p-0 !items-start !justify-start"
           >
-            <NeuroSidebar
+            <WorkspaceSidebar
               activePage={activePage}
               onNavItemClick={(item) => setActivePage(item.title.toLowerCase())}
               onNewAnalysis={() => {
@@ -1106,12 +1111,12 @@ export default function DashboardPage() {
                 setAudioDuration(undefined);
               }}
             />
-          </GlassSurface>
+          </PrismSurface>
         </div>
 
         {/* Main content — flex-1 fills whatever space the sidebar leaves */}
         <div className="flex flex-col flex-1 min-w-0">
-          <SiteHeader
+          <WorkspaceTopbar
             title="Cognitive Analysis"
             sidebarOpen={sidebarOpen}
             onToggleSidebar={() => setSidebarOpen((o) => !o)}
@@ -1131,7 +1136,7 @@ export default function DashboardPage() {
               }}
               aria-hidden={activePage !== "dashboard"}
             >
-              <DashboardView
+              <MissionControlView
                 entries={historyEntries}
                 onStartAnalysis={() => {
                   setActivePage("analysis");
@@ -1150,7 +1155,7 @@ export default function DashboardPage() {
               }}
               aria-hidden={activePage !== "history"}
             >
-              <HistoryPanel
+              <SessionHistoryPanel
                 entries={historyEntries}
                 onRestore={handleRestore}
                 onRemove={removeEntry}
@@ -1231,7 +1236,7 @@ export default function DashboardPage() {
                   className="w-full transition-opacity duration-300"
                   style={{ opacity: isLoading ? 0.45 : 1, pointerEvents: isLoading ? "none" : "auto" }}
                 >
-                  <AnalysisPanel
+                  <InputCommandPanel
                     onSubmit={handleSubmit}
                     isLoading={isLoading}
                     agentSteps={[]}
@@ -1298,10 +1303,10 @@ export default function DashboardPage() {
                 <div className="flex-1 min-h-0 overflow-y-auto">
                   {cognitiveReport ? (
                     <>
-                      <ReportPanel report={cognitiveReport} />
+                      <CognitionReportPanel report={cognitiveReport} />
                       {wordTimestamps && wordTimestamps.length > 0 && (
                         <div className="px-1 pb-2">
-                          <WaveformPanel wordTimestamps={wordTimestamps} duration={audioDuration} />
+                          <SpeechWavePanel wordTimestamps={wordTimestamps} duration={audioDuration} />
                         </div>
                       )}
                     </>
@@ -1314,7 +1319,7 @@ export default function DashboardPage() {
               {/* ── BOTTOM CENTER: Chat input ── */}
               <div className="shrink-0 flex justify-center">
                 <div style={{ width: "100%", maxWidth: 660 }}>
-                  <AnalysisPanel
+                  <InputCommandPanel
                     onSubmit={handleSubmit}
                     isLoading={isLoading}
                     agentSteps={[]}

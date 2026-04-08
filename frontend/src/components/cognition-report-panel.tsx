@@ -34,7 +34,7 @@ const GLASS: React.CSSProperties = {
   boxShadow: "var(--nt-glass-shadow)",
 };
 
-export function ReportPanel({ report }: { report: CognitiveReport }) {
+export function CognitionReportPanel({ report }: { report: CognitiveReport }) {
   const [showCitations, setShowCitations] = useState(false);
   const risk    = RISK_CONFIG[report.risk_level] ?? RISK_CONFIG.moderate;
   const loadPct = Math.round((report.overall_cognitive_load ?? 0) * 100);

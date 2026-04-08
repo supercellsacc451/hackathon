@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useRef, useMemo, useCallback } from "react";
-import type { WordTimestamp } from "@/components/analysis-panel";
+import type { WordTimestamp } from "@/components/input-command-panel";
 
 type Pause = { idx: number; start: number; end: number; duration: number; afterWordIndex: number };
 
-export type WaveformPanelProps = { wordTimestamps?: WordTimestamp[]; duration?: number };
+export type SpeechWavePanelProps = { wordTimestamps?: WordTimestamp[]; duration?: number };
 
 function seededNoise(s: number): number {
   const x = Math.sin(s * 127.1 + 311.7) * 43758.5453;
@@ -16,7 +16,7 @@ const BAR_COUNT = 96;
 const SVG_W     = 240;
 const SVG_H     = 32;
 
-export function WaveformPanel({ wordTimestamps = [], duration }: WaveformPanelProps) {
+export function SpeechWavePanel({ wordTimestamps = [], duration }: SpeechWavePanelProps) {
   const [activePauseIdx, setActivePauseIdx] = useState<number | null>(null);
   const [activeWordIdx, setActiveWordIdx]   = useState<number | null>(null);
   const wordEls = useRef<(HTMLSpanElement | null)[]>([]);

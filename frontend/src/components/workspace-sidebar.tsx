@@ -5,7 +5,7 @@ import { Activity, Brain, Clock, FileText, HelpCircle, LayoutDashboard, Mic, Plu
 
 type NavItem = { title: string; icon: React.ComponentType<{ size?: number; className?: string }>; url: string };
 
-type NeuroSidebarProps = {
+type WorkspaceSidebarProps = {
   onNewAnalysis?: () => void;
   onNavItemClick?: (item: NavItem) => void;
   activePage?: string;
@@ -13,13 +13,13 @@ type NeuroSidebarProps = {
   userEmail?: string;
 };
 
-export function NeuroSidebar({
+export function WorkspaceSidebar({
   onNewAnalysis,
   onNavItemClick,
   activePage = "analysis",
   userName = "Researcher",
   userEmail = "",
-}: NeuroSidebarProps) {
+}: WorkspaceSidebarProps) {
   const navMain: NavItem[] = [
     { title: "New Analysis", icon: Plus, url: "#" },
     { title: "Dashboard", icon: LayoutDashboard, url: "#" },

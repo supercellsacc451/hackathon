@@ -2,14 +2,14 @@
 
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 
-type NeuroRadarChartProps = {
+type ProfileRadarChartProps = {
   scores?: Record<string, number>;
   isLoading?: boolean;
 };
 
 const AXES = ["Lexical", "Semantic", "Prosody", "Syntax", "Affective"];
 
-export function NeuroRadarChart({ scores, isLoading }: NeuroRadarChartProps) {
+export function ProfileRadarChart({ scores, isLoading }: ProfileRadarChartProps) {
   const data = AXES.map((axis) => ({ axis, value: scores?.[axis.toLowerCase()] ?? 0 }));
 
   if (isLoading) {

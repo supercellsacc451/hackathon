@@ -15,7 +15,7 @@ const AUTO_STOP_SILENCE_MS = 2200; // auto-stop after 2.2s of silence
 const SILENCE_THRESHOLD    = 0.016; // RMS below this = silence
 const MIN_RECORD_MS        = 1800;  // don't auto-stop in first 1.8s
 
-export function useAudioRecorder(
+export function useVoiceRecorder(
   onTranscriptReady: (result: TranscriptResult) => void,
 ) {
   const [isRecording,     setIsRecording]     = useState(false);

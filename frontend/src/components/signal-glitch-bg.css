@@ -1,0 +1,130 @@
+.signal-glitch-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.signal-glitch-bg__base,
+.signal-glitch-bg__grid,
+.signal-glitch-bg__sweep,
+.signal-glitch-bg__noise,
+.signal-glitch-bg__bars {
+  position: absolute;
+  inset: 0;
+}
+
+.signal-glitch-bg__base {
+  background:
+    radial-gradient(120% 80% at 15% -10%, rgba(22, 163, 184, 0.28) 0%, transparent 55%),
+    radial-gradient(95% 75% at 90% 0%, rgba(249, 115, 22, 0.22) 0%, transparent 50%),
+    linear-gradient(125deg, #03131f 0%, #071a2a 35%, #0a2436 100%);
+  animation: bgDrift 18s ease-in-out infinite alternate;
+}
+
+.signal-glitch-bg.light .signal-glitch-bg__base {
+  background:
+    radial-gradient(120% 80% at 15% -10%, rgba(22, 163, 184, 0.22) 0%, transparent 55%),
+    radial-gradient(95% 75% at 90% 0%, rgba(249, 115, 22, 0.17) 0%, transparent 50%),
+    linear-gradient(125deg, #dbeaf2 0%, #e6f0f6 35%, #f2f7fb 100%);
+}
+
+.signal-glitch-bg__grid {
+  background-image:
+    linear-gradient(to right, rgba(129, 194, 221, 0.13) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(129, 194, 221, 0.11) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at 50% 50%, black, transparent 82%);
+  animation: gridDrift 12s linear infinite;
+}
+
+.signal-glitch-bg.light .signal-glitch-bg__grid {
+  background-image:
+    linear-gradient(to right, rgba(18, 85, 111, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(18, 85, 111, 0.07) 1px, transparent 1px);
+}
+
+.signal-glitch-bg__sweep {
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(61, 214, 196, 0.12) 46%,
+    rgba(249, 115, 22, 0.10) 53%,
+    transparent 66%,
+    transparent 100%
+  );
+  transform: translateX(-35%);
+  animation: sweep 6.2s ease-in-out infinite;
+}
+
+.signal-glitch-bg__noise {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.00) 0px,
+    rgba(255, 255, 255, 0.00) 3px,
+    rgba(147, 197, 253, 0.035) 4px,
+    rgba(147, 197, 253, 0.00) 7px
+  );
+  opacity: 0.55;
+  animation: noiseShift 450ms steps(7) infinite;
+}
+
+.signal-glitch-bg.light .signal-glitch-bg__noise {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.00) 0px,
+    rgba(0, 0, 0, 0.00) 3px,
+    rgba(14, 54, 74, 0.028) 4px,
+    rgba(0, 0, 0, 0.00) 7px
+  );
+}
+
+.signal-glitch-bg__bars span {
+  position: absolute;
+  left: -22%;
+  width: 144%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.66), rgba(251, 146, 60, 0.45), transparent);
+  opacity: 0;
+  animation: glitchLine 2.4s linear infinite;
+  animation-delay: var(--delay);
+  top: var(--top);
+}
+
+.signal-glitch-bg__bars span:nth-child(odd) {
+  height: 1px;
+  opacity: 0.35;
+}
+
+.signal-glitch-bg.light .signal-glitch-bg__bars span {
+  background: linear-gradient(90deg, transparent, rgba(14, 110, 144, 0.52), rgba(219, 111, 16, 0.35), transparent);
+}
+
+@keyframes bgDrift {
+  0% { transform: scale(1) translate3d(0, 0, 0); }
+  100% { transform: scale(1.08) translate3d(-2.5%, 2%, 0); }
+}
+
+@keyframes gridDrift {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-44px, -44px, 0); }
+}
+
+@keyframes sweep {
+  0% { transform: translateX(-40%) skewX(-8deg); opacity: 0.45; }
+  50% { transform: translateX(15%) skewX(-8deg); opacity: 0.8; }
+  100% { transform: translateX(70%) skewX(-8deg); opacity: 0.45; }
+}
+
+@keyframes noiseShift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(8px); }
+}
+
+@keyframes glitchLine {
+  0%, 100% { opacity: 0; transform: translateX(0); }
+  8% { opacity: 0.4; }
+  12% { opacity: 0.9; transform: translateX(2%); }
+  15% { opacity: 0.5; transform: translateX(-1%); }
+  22% { opacity: 0; }
+}

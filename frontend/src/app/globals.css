@@ -42,7 +42,7 @@
   --background:  #edf4f8;
   --nt-dot-grid: rgba(10,35,52,0.045);
 
-  /* GlassSurface brightness (used as a CSS var so page.tsx can read it) */
+  /* PrismSurface brightness (used as a CSS var so page.tsx can read it) */
   --nt-glass-brightness: 50;
 
   /* Foreground for existing utility usage */

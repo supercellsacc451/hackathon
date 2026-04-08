@@ -2,7 +2,7 @@
 
 import { IconLayoutSidebarLeftCollapse, IconLayoutSidebarLeftExpand, IconSun, IconMoon } from "@tabler/icons-react";
 
-type SiteHeaderProps = {
+type WorkspaceTopbarProps = {
   title?: string;
   subtitle?: string;
   sidebarOpen?: boolean;
@@ -11,14 +11,14 @@ type SiteHeaderProps = {
   onToggleTheme?: () => void;
 };
 
-export function SiteHeader({
+export function WorkspaceTopbar({
   title = "Cognitive Analysis",
   subtitle,
   sidebarOpen = true,
   onToggleSidebar,
   isDark = false,
   onToggleTheme,
-}: SiteHeaderProps) {
+}: WorkspaceTopbarProps) {
   return (
     <header
       className="flex items-center gap-3 px-4 h-11 shrink-0"

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useId } from 'react';
-import './GlassSurface.css';
+import './prism-surface.css';
 
-const GlassSurface = ({
+const PrismSurface = ({
   children,
   width = 200,
   height = 80,
@@ -231,4 +231,4 @@ const GlassSurface = ({
   );
 };
 
-export default GlassSurface;
+export default PrismSurface;

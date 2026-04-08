@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import type { CognitiveReport } from "@/components/report-panel";
-import type { WordTimestamp } from "@/components/analysis-panel";
+import type { CognitiveReport } from "@/components/cognition-report-panel";
+import type { WordTimestamp } from "@/components/input-command-panel";
 
 export type HistoryEntry = {
   id: string;
@@ -34,7 +34,7 @@ function save(entries: HistoryEntry[]) {
   } catch { /* quota exceeded — silently drop */ }
 }
 
-export function useAnalysisHistory() {
+export function useSessionHistory() {
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
 
   useEffect(() => {

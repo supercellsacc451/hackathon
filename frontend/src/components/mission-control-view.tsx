@@ -5,8 +5,8 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import type { HistoryEntry } from "@/hooks/useAnalysisHistory";
-import { NeuroRadarChart } from "@/components/radar-chart";
+import type { HistoryEntry } from "@/hooks/useSessionHistory";
+import { ProfileRadarChart } from "@/components/profile-radar-chart";
 import {
   IconBrain,
   IconActivity,
@@ -317,12 +317,12 @@ function EmptyState({ onStart }: { onStart: () => void }) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-interface DashboardViewProps {
+interface MissionControlViewProps {
   entries: HistoryEntry[];
   onStartAnalysis: () => void;
 }
 
-export function DashboardView({ entries, onStartAnalysis }: DashboardViewProps) {
+export function MissionControlView({ entries, onStartAnalysis }: MissionControlViewProps) {
   const latest = entries[0];
 
   const chartData = useMemo(() =>
@@ -544,7 +544,7 @@ export function DashboardView({ entries, onStartAnalysis }: DashboardViewProps) 
           </div>
 
           <div className="flex-1 flex items-center justify-center">
-            <NeuroRadarChart scores={latest?.scores} />
+            <ProfileRadarChart scores={latest?.scores} />
           </div>
 
           {/* Risk badge + load */}

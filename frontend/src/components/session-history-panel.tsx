@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { IconClockHour4, IconTrash, IconChevronRight, IconMicrophone, IconTextSize, IconBrain, IconX } from "@tabler/icons-react";
-import type { HistoryEntry } from "@/hooks/useAnalysisHistory";
-import type { CognitiveReport } from "@/components/report-panel";
-import type { RegionActivation } from "@/components/brain-viewer";
+import type { HistoryEntry } from "@/hooks/useSessionHistory";
+import type { CognitiveReport } from "@/components/cognition-report-panel";
+import type { RegionActivation } from "@/components/neural-cortex-viewer";
 
-type HistoryPanelProps = { entries: HistoryEntry[]; onRestore: (entry: HistoryEntry) => void; onRemove: (id: string) => void; onClearAll: () => void };
+type SessionHistoryPanelProps = { entries: HistoryEntry[]; onRestore: (entry: HistoryEntry) => void; onRemove: (id: string) => void; onClearAll: () => void };
 
 const RISK_CONFIG = {
   low:      { label: "Low",      color: "#1D9E75", bg: "rgba(29,158,117,0.12)"  },
@@ -237,7 +237,7 @@ function HistoryCard({ entry, onSelect, onRemove }: { entry: HistoryEntry; onSel
 
 // ─── Main panel ───────────────────────────────────────────────────────────────
 
-export function HistoryPanel({ entries, onRestore, onRemove, onClearAll }: HistoryPanelProps) {
+export function SessionHistoryPanel({ entries, onRestore, onRemove, onClearAll }: SessionHistoryPanelProps) {
   const [selected, setSelected] = useState<HistoryEntry | null>(null);
 
   if (entries.length === 0) {

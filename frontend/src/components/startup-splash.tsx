@@ -12,7 +12,7 @@ const FACES = [
 
 const CYCLE_MS = 600;
 
-export function NeuroTraceSplash({
+export function StartupSplash({
   minDisplayMs = 4400,
   readyToFade,
   onFadeComplete,

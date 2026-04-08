@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Mic, MicOff, Send, Upload, ChevronDown } from "lucide-react";
-import { useAudioRecorder } from "@/hooks/useAudioRecorder";
+import { useVoiceRecorder } from "@/hooks/useVoiceRecorder";
 
 export type WordTimestamp = { word: string; start?: number; end?: number };
 
@@ -17,7 +17,7 @@ type AgentStep = {
   detail?: string;
 };
 
-type AnalysisPanelProps = {
+type InputCommandPanelProps = {
   onSubmit?: (input: AnalysisInput) => void;
   isLoading?: boolean;
   agentSteps?: AgentStep[];
@@ -59,12 +59,12 @@ function WaveBars({ level }: { level: number }) {
   );
 }
 
-export function AnalysisPanel({
+export function InputCommandPanel({
   onSubmit,
   isLoading = false,
   agentSteps = [],
   placeholder = "Ask about cognitive signature analysis…",
-}: AnalysisPanelProps) {
+}: InputCommandPanelProps) {
   const [text, setText] = useState("");
   const [transcriptPreview, setTranscriptPreview] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
@@ -85,7 +85,7 @@ export function AnalysisPanel({
     isRecording, isTranscribing, recordSeconds, audioLevel,
     liveTranscript, silenceCountdown,
     toggle,
-  } = useAudioRecorder(handleTranscriptReady);
+  } = useVoiceRecorder(handleTranscriptReady);
 
   // When recording stops and Whisper transcript arrives, clear live transcript
   useEffect(() => {
