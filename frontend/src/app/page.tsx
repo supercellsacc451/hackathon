@@ -16,7 +16,6 @@ import type { RegionActivation } from "@/components/neural-cortex-viewer";
 import { useSessionHistory } from "@/hooks/useSessionHistory";
 import { useColorMode } from "@/hooks/useColorMode";
 import { ProfileRadarChart } from "@/components/profile-radar-chart";
-import { SignalGlitchBg } from "@/components/signal-glitch-bg";
 
 // ─── Brain region definitions ─────────────────────────────────────────────────
 
@@ -86,6 +85,7 @@ function scoreColor(v: number) {
 // ─── Dynamic imports ──────────────────────────────────────────────────────────
 
 const BrainViewer = dynamic(() => import("@/components/neural-cortex-viewer"), { ssr: false });
+const FluidNoiseBg = dynamic(() => import("@/components/fluid-noise-bg"), { ssr: false });
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -1061,9 +1061,9 @@ export default function DashboardPage() {
     <div className="relative h-screen w-full overflow-hidden">
       <StartupSplash />
 
-      {/* Custom animated glitch background */}
+      {/* Smooth animated background inspired by the original style */}
       <div className="fixed inset-0 z-0 h-screen w-screen">
-        <SignalGlitchBg isDark={isDark} />
+        <FluidNoiseBg isDark={isDark} />
       </div>
 
       {/* Readability layer over animated background */}
@@ -1071,8 +1071,8 @@ export default function DashboardPage() {
         className="fixed inset-0 z-[5] pointer-events-none"
         style={{
           background: isDark
-            ? "linear-gradient(180deg, rgba(2,11,18,0.68) 0%, rgba(2,11,18,0.5) 46%, rgba(2,11,18,0.78) 100%)"
-            : "linear-gradient(180deg, rgba(244,249,252,0.76) 0%, rgba(244,249,252,0.52) 46%, rgba(244,249,252,0.82) 100%)",
+            ? "linear-gradient(180deg, rgba(3,13,22,0.62) 0%, rgba(3,13,22,0.4) 48%, rgba(3,13,22,0.76) 100%)"
+            : "linear-gradient(180deg, rgba(245,250,253,0.68) 0%, rgba(245,250,253,0.42) 48%, rgba(245,250,253,0.78) 100%)",
         }}
       />
 
