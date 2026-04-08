@@ -257,37 +257,56 @@ export function InputCommandPanel({
 
         <div className="flex items-center gap-2 px-3 pb-2.5 pt-1">
           {/* Mic button */}
-          <button
-            onClick={toggle}
-            disabled={isTranscribing}
-            title={isRecording ? "Stop recording" : isTranscribing ? "Transcribing…" : "Record speech"}
-            className="w-7 h-7 rounded-full flex items-center justify-center transition-all"
-            style={{
-              color: isTranscribing
-                ? "rgba(99,179,237,0.85)"
+          <div className="relative flex items-center justify-center">
+            <span
+              aria-hidden
+              className="absolute -inset-1.5 rounded-full animate-pulse pointer-events-none"
+              style={{
+                border: isTranscribing
+                  ? "1px solid rgba(99,179,237,0.45)"
+                  : isRecording
+                  ? "1px solid rgba(239,159,39,0.65)"
+                  : "1px solid rgba(43,208,189,0.55)",
+                boxShadow: isTranscribing
+                  ? "0 0 10px rgba(99,179,237,0.25)"
+                  : isRecording
+                  ? "0 0 12px rgba(239,159,39,0.35)"
+                  : "0 0 10px rgba(43,208,189,0.25)",
+              }}
+            />
+
+            <button
+              onClick={toggle}
+              disabled={isTranscribing}
+              title={isRecording ? "Stop recording" : isTranscribing ? "Transcribing…" : "Record speech"}
+              className="relative z-[1] w-7 h-7 rounded-full flex items-center justify-center transition-all"
+              style={{
+                color: isTranscribing
+                  ? "rgba(99,179,237,0.85)"
+                  : isRecording
+                  ? "#ef9f27"
+                  : "var(--nt-icon)",
+                background: isRecording
+                  ? "rgba(239,159,39,0.12)"
+                  : isTranscribing
+                  ? "rgba(99,179,237,0.08)"
+                  : undefined,
+                border: isRecording
+                  ? "1px solid rgba(239,159,39,0.35)"
+                  : isTranscribing
+                  ? "1px solid rgba(99,179,237,0.25)"
+                  : "none",
+                boxShadow: isRecording ? "0 0 10px rgba(239,159,39,0.2)" : undefined,
+              }}
+            >
+              {isTranscribing
+                ? <div className="w-3 h-3 rounded-full border border-blue-400/40 border-t-blue-400 animate-spin" />
                 : isRecording
-                ? "#ef9f27"
-                : "var(--nt-icon)",
-              background: isRecording
-                ? "rgba(239,159,39,0.12)"
-                : isTranscribing
-                ? "rgba(99,179,237,0.08)"
-                : undefined,
-              border: isRecording
-                ? "1px solid rgba(239,159,39,0.35)"
-                : isTranscribing
-                ? "1px solid rgba(99,179,237,0.25)"
-                : "none",
-              boxShadow: isRecording ? "0 0 10px rgba(239,159,39,0.2)" : undefined,
-            }}
-          >
-            {isTranscribing
-              ? <div className="w-3 h-3 rounded-full border border-blue-400/40 border-t-blue-400 animate-spin" />
-              : isRecording
-              ? <MicOff size={13} />
-              : <Mic size={13} />
-            }
-          </button>
+                ? <MicOff size={13} />
+                : <Mic size={13} />
+              }
+            </button>
+          </div>
 
           <span
             className="text-[10px] leading-none"
