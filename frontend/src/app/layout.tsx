@@ -21,9 +21,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NeuroTrace",
+  title: "CortexFlow",
   description:
-    "Agentic AI pipeline mapping cognitive signatures onto a 3D brain atlas via linguistic biomarker analysis.",
+    "Groq-powered cognitive analysis workspace with a premium neuroscience-inspired UI and live biomarker insights.",
 };
 
 export default function RootLayout({

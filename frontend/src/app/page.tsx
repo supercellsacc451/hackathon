@@ -327,10 +327,10 @@ function BiomarkersPanel() {
         className="mt-3 px-4 py-3 rounded-xl flex items-center gap-3"
         style={{ ...GLASS }}
       >
-        <div className="w-1 self-stretch rounded-full shrink-0" style={{ background: "linear-gradient(to bottom, #3b82f6, #a855f7)" }} />
+        <div className="w-1 self-stretch rounded-full shrink-0" style={{ background: "linear-gradient(to bottom, #14b8a6, #f97316)" }} />
         <p style={{ color: "var(--nt-text-xs)", fontSize: 10, fontFamily: "var(--font-dm-sans)", lineHeight: 1.6 }}>
           All scores normalised 0–1 against healthy-population baselines. Higher scores indicate greater deviation.
-          Biomarkers are extracted via a 7-agent Langflow pipeline using spaCy, sentence-transformers, and Claude claude-sonnet-4-6.
+          Biomarkers are extracted through a Groq-ready transcription layer and an optimized multi-agent analysis backend.
         </p>
       </div>
     </div>
@@ -342,7 +342,7 @@ const REGION_MESH_CONFIG_COLORS: Record<string, string> = {
   "Wernicke's area": "#f59e0b",
   "DLPFC":           "#00e5ff",
   "SMA":             "#1d9e75",
-  "Amygdala":        "#a855f7",
+  "Amygdala":        "#ef4444",
 };
 
 const DEFAULT_REGIONS: RegionActivation[] = [
@@ -415,7 +415,7 @@ function BrainRegionsPanel() {
       lobe: "Limbic",
       mni: "−24, −4, −22",
       agent: "Affective",
-      agentColor: "#a855f7",
+      agentColor: "#ef4444",
       function: "Emotional salience, fear conditioning, affective language valence.",
       signal: "↑ arousal + ↓ valence → mood disorder, anxiety fingerprint",
       tracts: ["Uncinate fasciculus", "Amygdalofugal"],
@@ -461,7 +461,7 @@ function BrainRegionsPanel() {
           </span>
         </div>
         <p style={{ color: "var(--nt-text-xs)", fontSize: 11, fontFamily: "var(--font-dm-sans)", lineHeight: 1.5 }}>
-          Neural circuits that drive language and cognition, each mapped to a NeuroTrace analysis agent.
+          Neural circuits that drive language and cognition, each mapped to a dedicated analysis agent.
         </p>
       </div>
 
@@ -648,7 +648,7 @@ function BrainRegionsPanel() {
             Analysis Pipeline
           </div>
           <div className="flex flex-col gap-1">
-            {["Speech/text → Whisper STT", "spaCy + sentence-transformers", "7-agent Langflow pipeline", "MNI152 activation overlay"].map((step, i) => (
+            {["Speech/text → Groq Whisper", "Linguistic + semantic feature extraction", "Multi-agent cognitive inference", "MNI152 activation overlay"].map((step, i) => (
               <div key={i} className="flex items-center gap-2">
                 <div
                   className="w-4 h-4 rounded flex items-center justify-center shrink-0"
@@ -1206,7 +1206,7 @@ export default function DashboardPage() {
                       textShadow: "0 0 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.14)",
                     }}
                   >
-                    neurotrace
+                    cortexflow
                   </span>
                   <span
                     className="text-[11px] tracking-[0.32em] uppercase font-medium"

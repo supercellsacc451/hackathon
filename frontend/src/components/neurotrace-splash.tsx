@@ -95,7 +95,7 @@ export function NeuroTraceSplash({
             fontFamily: "var(--font-syne), sans-serif",
           }}
         >
-          neurotrace
+          cortexflow
         </span>
         <span
           className="text-sm tracking-widest uppercase"
