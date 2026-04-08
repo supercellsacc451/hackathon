@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 
 const FACES = [
-  "/images/MindHack_2026_LogoNOBACKGROUND.png",
-  "/images/MindHack_2026_LogoASLEEP.png",
-  "/images/MindHack_2026_LogoGlasses.png",
-  "/images/MindHack_2026_LogoConfusedNBG.png",
-  "/images/MindHack_2026_LogoNOBACKGROUND2.png",
+  "/images/cf_face_idle.png",
+  "/images/cf_face_sleep.png",
+  "/images/cf_face_glasses.png",
+  "/images/cf_face_confused.png",
+  "/images/cf_face_alt.png",
 ];
 
 const CYCLE_MS = 600;

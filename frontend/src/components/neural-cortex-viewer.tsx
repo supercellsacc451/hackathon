@@ -32,11 +32,11 @@ type BrainViewerProps = {
 // ─── Region mesh config (maps region name → OBJ file + color) ────────
 
 const REGION_MESH_CONFIG: Record<string, { file: string; color: string }> = {
-  "Broca's area":    { file: "/region_broca.obj",    color: "#D85A30" },
-  "Wernicke's area": { file: "/region_wernicke.obj",  color: "#EF9F27" },
-  "DLPFC":           { file: "/region_dlpfc.obj",     color: "#1D9E75" },
-  "SMA":             { file: "/region_sma.obj",       color: "#EF9F27" },
-  "Amygdala":        { file: "/region_amygdala.obj",  color: "#B4B2A9" },
+  "Broca's area":    { file: "/cortex_region_language_exec.obj",  color: "#D85A30" },
+  "Wernicke's area": { file: "/cortex_region_language_comp.obj",  color: "#EF9F27" },
+  "DLPFC":           { file: "/cortex_region_exec_control.obj",   color: "#1D9E75" },
+  "SMA":             { file: "/cortex_region_motor_planning.obj", color: "#EF9F27" },
+  "Amygdala":        { file: "/cortex_region_affect_hub.obj",     color: "#B4B2A9" },
 };
 
 // ─── Anatomical relay nodes — 32 real MNI structures (mm × 0.01 → scene) ──
@@ -470,7 +470,7 @@ export default function BrainViewer({
     const loader = new OBJLoader();
 
     loader.load(
-      "/brain_surface.obj",
+      "/cortexflow_surface_mesh.obj",
       (obj) => {
         obj.traverse((child) => {
           if ((child as THREE.Mesh).isMesh) {
@@ -480,7 +480,7 @@ export default function BrainViewer({
         scene.add(obj);
       },
       undefined,
-      (err) => console.warn("Failed to load brain_surface.obj:", err),
+      (err) => console.warn("Failed to load cortexflow_surface_mesh.obj:", err),
     );
 
     // ── Load region activation meshes (like NeuraLens tumor meshes) ──

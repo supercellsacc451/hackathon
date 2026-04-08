@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """
-Generate brain surface + anatomically-shaped activation region meshes from MNI152 NIfTI.
+Generate CortexFlow brain surface + anatomically-shaped activation region meshes from MNI152 NIfTI.
 
 Uses scikit-image marching cubes (same approach as NeuraLens) to extract:
-  1. brain_surface.obj  — semi-transparent anatomical context
-  2. region_broca.obj   — Broca's area (IFG: BA44 + BA45)
-  3. region_wernicke.obj — Wernicke's area (posterior STG)
-  4. region_dlpfc.obj   — DLPFC (middle frontal gyrus)
-  5. region_sma.obj     — SMA (medial BA6)
-  6. region_amygdala.obj — Amygdala (subcortical)
+    1. cortexflow_surface_mesh.obj  — semi-transparent anatomical context
+    2. cortex_region_language_exec.obj   — Broca's area (IFG: BA44 + BA45)
+    3. cortex_region_language_comp.obj   — Wernicke's area (posterior STG)
+    4. cortex_region_exec_control.obj    — DLPFC (middle frontal gyrus)
+    5. cortex_region_motor_planning.obj  — SMA (medial BA6)
+    6. cortex_region_affect_hub.obj      — Amygdala (subcortical)
 
 Each region uses multiple MNI sub-centers with anisotropic covariance matrices
 that follow the anatomical shape of the structure, masked to gray matter.
 
 Usage:
-    /opt/homebrew/bin/python3 frontend/scripts/generate_brain_mesh.py
+    /opt/homebrew/bin/python3 frontend/scripts/build_cortex_mesh.py
 """
 
 import os
@@ -27,7 +27,7 @@ from skimage.measure import marching_cubes
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PUBLIC_DIR = os.path.join(SCRIPT_DIR, "..", "public")
-NIFTI_PATH = os.path.join(PUBLIC_DIR, "MNI152_T1_1mm.nii.gz")
+NIFTI_PATH = os.path.join(PUBLIC_DIR, "cortexflow_reference_mni.nii.gz")
 
 # ─── Brain regions — anatomically-shaped definitions ──────────────────
 #
@@ -270,7 +270,7 @@ def main():
     verts_three = voxel_to_threejs(verts_mni, global_center, global_extent)
     normals_three = normals_to_threejs(normals)
 
-    brain_path = os.path.join(PUBLIC_DIR, "brain_surface.obj")
+    brain_path = os.path.join(PUBLIC_DIR, "cortexflow_surface_mesh.obj")
     write_obj(verts_three, faces, normals_three, brain_path)
     print(f"  Saved: {brain_path}")
     print(f"  {len(verts_three)} vertices, {len(faces)} faces, {os.path.getsize(brain_path)/1024:.0f} KB")
@@ -316,7 +316,14 @@ def main():
         print(f"    MNI bbox: [{bbox_min[0]:.0f},{bbox_min[1]:.0f},{bbox_min[2]:.0f}] to [{bbox_max[0]:.0f},{bbox_max[1]:.0f},{bbox_max[2]:.0f}]")
         print(f"    Extent: {bbox_size[0]:.0f} x {bbox_size[1]:.0f} x {bbox_size[2]:.0f} mm")
 
-        region_path = os.path.join(PUBLIC_DIR, f"region_{region['id']}.obj")
+        region_filename = {
+            "broca": "cortex_region_language_exec.obj",
+            "wernicke": "cortex_region_language_comp.obj",
+            "dlpfc": "cortex_region_exec_control.obj",
+            "sma": "cortex_region_motor_planning.obj",
+            "amygdala": "cortex_region_affect_hub.obj",
+        }[region["id"]]
+        region_path = os.path.join(PUBLIC_DIR, region_filename)
         write_obj(r_verts_three, r_faces, r_normals_three, region_path)
         print(f"    Saved: {region_path}")
         print(f"    {len(r_verts_three)} vertices, {len(r_faces)} faces, {os.path.getsize(region_path)/1024:.0f} KB")
