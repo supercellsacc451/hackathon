@@ -1095,10 +1095,12 @@ export default function DashboardPage() {
             width={240}
             height={"100%" as unknown as number}
             borderRadius={0}
-            brightness={isDark ? 6 : 50}
-            opacity={isDark ? 0.85 : 0.7}
-            blur={14}
-            className="border-r"
+            brightness={isDark ? 10 : 58}
+            opacity={isDark ? 0.94 : 0.86}
+            blur={18}
+            backgroundOpacity={isDark ? 0.22 : 0.18}
+            saturation={1.12}
+            className="border-r sidebar-dock"
             style={{ borderRight: "1px solid var(--nt-divider)" } as React.CSSProperties}
             contentClassName="!p-0 !items-start !justify-start"
           >

@@ -133,6 +133,44 @@ body {
   font-weight: 500;
 }
 
+/* ─── Sidebar readability layer ─────────────────────────── */
+.sidebar-dock {
+  position: relative;
+  isolation: isolate;
+}
+
+.sidebar-dock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--background) 78%, transparent) 0%,
+    color-mix(in srgb, var(--background) 64%, transparent) 48%,
+    color-mix(in srgb, var(--background) 84%, transparent) 100%
+  );
+  z-index: 0;
+}
+
+.sidebar-content-scrim {
+  position: relative;
+  z-index: 1;
+}
+
+.sidebar-content-scrim .nt-nav-btn {
+  color: var(--nt-text-md);
+}
+
+.sidebar-content-scrim .nt-nav-btn:hover {
+  color: var(--nt-text-hi);
+  background: color-mix(in srgb, var(--nt-hover) 75%, var(--background));
+}
+
+.sidebar-content-scrim .nt-nav-btn.nt-active {
+  background: color-mix(in srgb, var(--nt-active) 82%, var(--background));
+}
+
 /* ─── Scrollbar ──────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }

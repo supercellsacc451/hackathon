@@ -38,7 +38,7 @@ export function WorkspaceSidebar({
   };
 
   return (
-    <aside className="flex flex-col h-full w-[240px] shrink-0 py-4 px-2 gap-1">
+    <aside className="sidebar-content-scrim flex flex-col h-full w-[240px] shrink-0 py-4 px-2 gap-1">
       {/* Logo */}
       <div className="px-3 py-3 mb-2">
         <div className="flex items-center gap-2">
