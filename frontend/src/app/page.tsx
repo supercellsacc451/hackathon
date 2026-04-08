@@ -965,7 +965,12 @@ export default function DashboardPage() {
         input.type === "text"
           ? { input_value: input.content, ...(sessionId ? { session_id: sessionId } : {}) }
           : input.type === "transcript"
-            ? { transcript: input.content, pause_map: input.pauseMap, ...(sessionId ? { session_id: sessionId } : {}) }
+            ? {
+                transcript: input.content,
+                pause_map: input.pauseMap,
+                audio_duration: input.duration,
+                ...(sessionId ? { session_id: sessionId } : {}),
+              }
             : null;
 
       if (!body) { setIsLoading(false); return; }
