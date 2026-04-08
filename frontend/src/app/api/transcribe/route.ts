@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY ?? "";
 const GROQ_TRANSCRIBE_MODEL = process.env.GROQ_TRANSCRIBE_MODEL ?? "whisper-large-v3-turbo";
+const MAX_AUDIO_BYTES = 25 * 1024 * 1024;
 
 /**
  * Extract pause map from Whisper response with word-level timestamps
@@ -32,6 +33,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No audio file provided" }, { status: 400 });
     }
 
+    if (audioFile.size <= 0) {
+      return NextResponse.json({ error: "Uploaded file is empty" }, { status: 400 });
+    }
+
+    if (audioFile.size > MAX_AUDIO_BYTES) {
+      return NextResponse.json(
+        { error: "Audio file is too large. Please upload a file under 25MB." },
+        { status: 413 }
+      );
+    }
+
     // Call Groq's OpenAI-compatible transcription API
     const whisperFormData = new FormData();
     whisperFormData.append("file", audioFile);
@@ -45,6 +57,7 @@ export async function POST(req: NextRequest) {
         Authorization: `Bearer ${GROQ_API_KEY}`,
       },
       body: whisperFormData,
+      signal: AbortSignal.timeout(60_000),
     });
 
     if (!whisperRes.ok) {
