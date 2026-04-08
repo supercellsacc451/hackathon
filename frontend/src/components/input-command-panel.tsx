@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Mic, MicOff, Send, Upload, ChevronDown } from "lucide-react";
+import { Mic, MicOff, Send, Upload } from "lucide-react";
 import { useVoiceRecorder } from "@/hooks/useVoiceRecorder";
 
 export type WordTimestamp = { word: string; start?: number; end?: number };
@@ -262,16 +262,6 @@ export function InputCommandPanel({
         `}</style>
 
         <div className="flex items-center gap-2 px-3 pb-2.5 pt-1">
-          {/* Model badge */}
-          <div
-            className="flex items-center gap-1.5 text-[11px] rounded-lg px-2 py-1"
-            style={{ background: "var(--nt-hover)", border: "1px solid var(--nt-divider)", color: "var(--nt-text-xs)" }}
-          >
-            <div className="w-2 h-2 rounded-full bg-orange-400" />
-            <span>Claude</span>
-            <ChevronDown size={10} className="opacity-50" />
-          </div>
-
           {/* Mic button */}
           <button
             onClick={toggle}
