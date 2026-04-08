@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend (Next.js)
 
-## Getting Started
+Frontend for the hackathon app. This project is inspired by NeuroTrace UI patterns and updated to use Groq-first transcription in the local API route.
 
-First, run the development server:
+## Stack
+
+- Next.js App Router
+- React + TypeScript
+- Tailwind CSS v4
+- Recharts + Three.js
+- Groq OpenAI-compatible transcription API
+
+## Local Setup
+
+1. Install dependencies:
+
+```bash
+npm ci
+```
+
+2. Create local env file:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Fill env vars in `.env.local`:
+
+```env
+GROQ_API_KEY=your_groq_key
+GROQ_TRANSCRIBE_MODEL=whisper-large-v3-turbo
+BACKEND_URL=http://localhost:8000
+```
+
+4. Start dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## API Routes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `POST /api/transcribe`: uploads audio and calls Groq transcription.
+- `POST /api/analyze`: proxies analysis payload to backend (`BACKEND_URL`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deployment
 
-## Learn More
+### Vercel (frontend)
 
-To learn more about Next.js, take a look at the following resources:
+Set these environment variables in Vercel project settings:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `GROQ_API_KEY`
+- `GROQ_TRANSCRIBE_MODEL` (optional, default is `whisper-large-v3-turbo`)
+- `BACKEND_URL` (public URL of the backend hosted on Render)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Render (backend)
 
-## Deploy on Vercel
+Deploy backend separately on Render and copy the Render service URL into Vercel as `BACKEND_URL`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Keep API secrets only in environment variables.
+- The frontend is designed to be iterated quickly during the hackathon: preserve the reusable panel architecture and adjust only tokens/content where needed.

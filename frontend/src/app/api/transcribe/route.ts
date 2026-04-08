@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY ?? "";
+const GROQ_API_KEY = process.env.GROQ_API_KEY ?? "";
+const GROQ_TRANSCRIBE_MODEL = process.env.GROQ_TRANSCRIBE_MODEL ?? "whisper-large-v3-turbo";
 
 /**
  * Extract pause map from Whisper response with word-level timestamps
@@ -20,6 +21,10 @@ function extractPauseMap(wordTimestamps: Array<{ word: string; start: number; en
 
 export async function POST(req: NextRequest) {
   try {
+    if (!GROQ_API_KEY) {
+      return NextResponse.json({ error: "Missing GROQ_API_KEY" }, { status: 500 });
+    }
+
     const formData = await req.formData();
     const audioFile = formData.get("audio") as File;
 
@@ -27,17 +32,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No audio file provided" }, { status: 400 });
     }
 
-    // Call OpenAI Whisper API
+    // Call Groq's OpenAI-compatible transcription API
     const whisperFormData = new FormData();
     whisperFormData.append("file", audioFile);
-    whisperFormData.append("model", "whisper-1");
+    whisperFormData.append("model", GROQ_TRANSCRIBE_MODEL);
     whisperFormData.append("response_format", "verbose_json");
-    whisperFormData.append("timestamp_granularities", "word");
+    whisperFormData.append("timestamp_granularities[]", "word");
 
-    const whisperRes = await fetch("https://api.openai.com/v1/audio/transcriptions", {
+    const whisperRes = await fetch("https://api.groq.com/openai/v1/audio/transcriptions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
+        Authorization: `Bearer ${GROQ_API_KEY}`,
       },
       body: whisperFormData,
     });
