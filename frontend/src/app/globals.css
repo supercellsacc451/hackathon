@@ -159,7 +159,7 @@ body {
 }
 
 .sidebar-content-scrim .nt-nav-btn {
-  color: var(--nt-text-md);
+  color: #000000;
 }
 
 .sidebar-content-scrim .nt-nav-btn:hover {
@@ -169,6 +169,10 @@ body {
 
 .sidebar-content-scrim .nt-nav-btn.nt-active {
   background: color-mix(in srgb, var(--nt-active) 82%, var(--background));
+}
+
+.dark .sidebar-content-scrim .nt-nav-btn {
+  color: #ffffff;
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────── */
