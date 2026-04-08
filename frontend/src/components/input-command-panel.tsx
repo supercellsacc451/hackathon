@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Mic, MicOff, Send, Upload } from "lucide-react";
+import { Mic, MicOff, Send } from "lucide-react";
 import { useVoiceRecorder } from "@/hooks/useVoiceRecorder";
 
 export type WordTimestamp = { word: string; start?: number; end?: number };
@@ -66,7 +66,6 @@ export function InputCommandPanel({
   placeholder = "Ask about cognitive signature analysis…",
 }: InputCommandPanelProps) {
   const [text, setText] = useState("");
-  const fileRef = useRef<HTMLInputElement>(null);
 
   const handleTranscriptReady = useCallback(
     ({ transcript, pauseMap, wordTimestamps, duration }: {
@@ -99,11 +98,6 @@ export function InputCommandPanel({
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
-  };
-
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) onSubmit?.({ type: "file", file });
   };
 
   const statusDot = (s: AgentStep["status"]) => {
@@ -295,6 +289,13 @@ export function InputCommandPanel({
             }
           </button>
 
+          <span
+            className="text-[10px] leading-none"
+            style={{ color: "var(--nt-text-xs)", fontFamily: "var(--font-dm-sans)" }}
+          >
+            Record your audio: click mic. Auto-submit after ~3s of silence.
+          </span>
+
           {/* Status label */}
           {(isRecording || isTranscribing) && (
             <span
@@ -309,16 +310,6 @@ export function InputCommandPanel({
                 : "transcribing…"}
             </span>
           )}
-
-          {/* File upload */}
-          <button
-            onClick={() => fileRef.current?.click()}
-            title="Upload file"
-            className="nt-nav-btn w-7 h-7 rounded-full flex items-center justify-center"
-          >
-            <Upload size={13} />
-          </button>
-          <input ref={fileRef} type="file" accept=".txt,.pdf,.wav,.mp3,.m4a" className="hidden" onChange={handleFile} />
 
           <div className="flex-1" />
 
